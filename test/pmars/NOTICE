@@ -1,0 +1,26 @@
+Test fixtures for the MARS. This directory, and only it, holds material
+under the GNU GPL v2 (COPYING here); the rest of the repository is MIT.
+
+imp.red and dwarf.red are the two warriors from A. K. Dewdney's 1984
+Scientific American article, typed here.
+
+validate.red (Stefan Strack, "Validate 1.1R") and rave.red come from the
+pMARS 0.9.2 distribution (GNU GPL v2, see the pMARS COPYING file). They
+are used as test data only and are not part of the program.
+
+The .lst files are pMARS 0.9.2's load listings of each warrior (pmars -r 1
+-c 1 file.red), produced in a gcc:13 container; battles.txt is
+the oracle's result for each pair at a fixed position (pmars -r 1 -b -F pos
+a.red b.red), warrior 1 at address 0 and warrior 2 at pos.
+
+aeka.red (Kurt Franke), flashpaper.red (Matt Hastings' Flash Paper, the
+macro version) and pspace.red (Stefan Strack) are also from the pMARS
+0.9.2 distribution, used here for FOR/ROF, stringization and P-space;
+pspace.lst is pspace.red assembled with ROUNDS = 2 and pspace12.lst with
+ROUNDS = 12 (the strategy block is FOR'd in only past ten rounds).
+
+sitter.red, pstest1.red and pstest2.red are ours: matches.txt holds their
+six-round results against the sitter (pmars -r 6 -b -F 4000), which depend
+only on what P-space carries from one round to the next. pMARS keeps the
+-F position for the first round only, so no position-dependent pair can
+serve as a multi-round fixture.

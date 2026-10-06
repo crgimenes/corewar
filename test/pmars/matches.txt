@@ -1,0 +1,2 @@
+pstest1 sitter 4000 6 0 4 2
+pstest2 sitter 4000 6 0 3 3

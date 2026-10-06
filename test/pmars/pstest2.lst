@@ -1,0 +1,5 @@
+       LDP.AB #     0, $     4
+       SNE.AB #     2, $     3
+       DAT.F  #     0, #     0
+       JMP.B  $     0, $     0
+       DAT.F  #     0, #     0

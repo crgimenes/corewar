@@ -1,0 +1,57 @@
+; Core War's pick: who fights, from the warriors the host offers — the
+; classics it carries and the .red files of the person's own — and the way
+; into the arena. The list lives in C, with the arena, so a trip through
+; the editor comes back to the same fighters.
+;
+; Everything past the app's base is cw-*: the same names on every host that
+; runs Core War, so this one program is the pick in rocchetto and on a
+; desktop alike.
+;   (cw-library)  the warriors on offer, as (path tag) tuples
+;   (cw-fight)    the arena over this screen; "" when it opened, else why
+;   (cw-edit p)   the warrior at p (a new one when there is none) in an
+;                 editor; "" when it opened, else why
+;   (cw-manual)   the Redcode manual; "" when it opened, else why
+;   (cw-count) (cw-picked i) (cw-colour i) (cw-add p) (cw-drop) (cw-clear)
+;                 the fighters
+
+(def note "")
+
+(def red?
+  (fn (p)
+    (let ((n (str-len p)))
+      (and (> n 4) (= (str-sub p (- n 4) n) ".red")))))
+
+(def base
+  (fn (p)
+    (let ((parts (str-split "/" p)))
+      (nth parts (- (length parts) 1)))))
+
+; The path a typed number names, or "" when it names nothing.
+(def at-index
+  (fn (i)
+    (let ((ws (cw-library)))
+      (if (and (>= i 1) (<= i (length ws)))
+        (letv (path tag) (nth ws (- i 1)) path)
+        ""))))
+
+(def with-red (fn (name) (if (red? name) name (str-concat name ".red"))))
+
+; A line has to be a number before it is asked for one: (number "x") is an
+; error, and an error would take the screen down with it.
+(def digits?
+  (fn (s)
+    (fold (fn (ok i) (and ok (str-find (str-sub s i (+ i 1)) "0123456789")))
+      (not (is-empty s))
+      (range (str-len s)))))
+
+; The letter or the whole word: "f" and "fight" both fight.
+(def chose (fn (typed letter word) (or (= typed letter) (= typed word))))
+
+; The last row: what is running and on what, the way a terminal's status
+; line says it.
+(def footer
+  (fn (name)
+    (attr A_REV)
+    (fill (- H 1) 0 1 W " ")
+    (print-at (- H 1) 1 (str-fmt "%s %s · %dx%d" name VERSION W H))
+    (attr 0)))

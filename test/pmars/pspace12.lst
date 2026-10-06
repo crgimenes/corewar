@@ -1,0 +1,14 @@
+       LDP.AB #     1, #     0
+       ADD.AB #     1, $    -1
+       STP.B  $    -2, #     1
+       LDP.AB #     2, #     0
+       LDP.AB #     0, #     0
+       SNE.AB #    -1, $    -1
+       JMP.B  $     4, $     0
+       JMZ.B  $     5, $    -3
+       DJN.B  $     5, $    -4
+       JMP.B  $     2, $     0
+       JMP.B  $     0, $     0
+       JMP.B  $     0, $     0
+       JMP.B  $     0, $     0
+       JMP.B  $     0, $     0
