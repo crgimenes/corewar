@@ -3,3 +3,7 @@ bin/
 *.fbb
 dist/
 release.sh
+# planning, kept local
+CLAUDE.md
+project.md
+TODO.md
