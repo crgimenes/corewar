@@ -26,7 +26,7 @@ WARRIORS = $(wildcard warriors/*.red)
 LDFLAGS ?=
 PREFIX ?= /usr/local
 
-.PHONY: all test fuzz fmt fmt-check tidy check qa install dist clean
+.PHONY: all test fuzz fmt fmt-check tidy check qa smoke install dist clean
 
 all: bin/corewar corewar.fbb
 
@@ -98,7 +98,11 @@ check: build/library.c
 		--suppress=missingIncludeSystem --error-exitcode=1 $(INC) \
 		src/arena.c src/desk.c src/main.c test/test_corewar.c
 
-qa: all fmt-check test tidy check
+# The binary as shipped, on a terminal: it starts, draws, and quits.
+smoke: bin/corewar
+	sh $(FILO_TERM)/tools/smoke.sh bin/corewar '\033' q
+
+qa: all fmt-check test smoke tidy check
 
 install: bin/corewar
 	mkdir -p $(PREFIX)/bin
