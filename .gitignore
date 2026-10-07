@@ -1,3 +1,5 @@
 build/
 bin/
 *.fbb
+dist/
+release.sh

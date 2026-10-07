@@ -33,6 +33,16 @@ and keeps the fighters with `cw-count`, `cw-picked`, `cw-colour`,
 `cw-add`, `cw-drop` and `cw-clear`. A host that offers those runs the
 same `corewar.fbb`.
 
+## Install
+
+```
+brew install crgimenes/tap/corewar
+```
+
+installs corewar. Or take a binary from the
+[releases](https://github.com/crgimenes/corewar/releases): macOS (universal, arm64
+and x86_64) and Linux (static, amd64 and arm64), nothing else to install.
+
 ## Build
 
 ```
@@ -40,6 +50,7 @@ make            # bin/corewar and corewar.fbb
 make test       # the MARS against pMARS's listings and results, and the
                 # pick and the arena driven as a terminal drives them
 make qa         # the above, clang-format, clang-tidy, cppcheck
+make dist       # the release binaries in dist/ (needs zig for Linux)
 ```
 
 `FILO_TERM ?= ../filo-term`, `FILO ?= ../clang_filo`. The pick is compiled

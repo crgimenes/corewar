@@ -1639,6 +1639,9 @@ bool mars_step(mars *m) {
     uint32_t tries = 0;
     while (tries < n && !m->alive[m->turn]) {
         m->turn = (m->turn + 1) % n;
+        if (m->turn == 0) {
+            m->cycle++; /* past a dead last warrior is a cycle too, or a tie never ends */
+        }
         tries++;
     }
     uint32_t who = m->turn;

@@ -66,6 +66,12 @@ int main(int argc, char **argv) {
             fputs(usage, stdout);
             return 0;
         }
+        if (strcmp(w, "--version") == 0) {
+            fputs("corewar ", stdout);
+            fputs(app_program.version, stdout);
+            fputs("\n", stdout);
+            return 0;
+        }
         if (strcmp(w, "-b") == 0) {
             batch = true;
         } else if ((strcmp(w, "-r") == 0 || strcmp(w, "-F") == 0) && i + 1 < argc &&

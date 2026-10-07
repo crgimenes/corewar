@@ -153,6 +153,24 @@ static void test_validate_alone(void) {
     CHECK(M.cycle == 80000);
 }
 
+/* Two imps tie while the last warrior is dead from the first cycle: the
+   cycles past it still count, and the round ends. */
+static void test_tie_past_dead_last(void) {
+    mars_params p = mars_defaults();
+    char err[MARS_ERR_MAX];
+    static const char imp[] = ";redcode\n;name imp\nmov 0, 1\nend\n";
+    static const char dies[] = ";redcode\n;name dies\ndat 0, 0\nend\n";
+    CHECK(mars_assemble((const uint8_t *)imp, sizeof(imp) - 1, &p, &W[0], err, sizeof(err)));
+    CHECK(mars_assemble((const uint8_t *)imp, sizeof(imp) - 1, &p, &W[1], err, sizeof(err)));
+    CHECK(mars_assemble((const uint8_t *)dies, sizeof(dies) - 1, &p, &W[2], err, sizeof(err)));
+    const mars_warrior *ws[3] = {&W[0], &W[1], &W[2]};
+    uint32_t pos[3] = {0, 4000, 2000};
+    mars_load(&M, &p, ws, pos, 3);
+    (void)mars_run(&M);
+    CHECK(M.nalive == 2);
+    CHECK(M.cycle == p.cycles);
+}
+
 /* One battle list: "a b pos 1|2|tie", warriors by name under dir. */
 static int run_list(const char *dir, const char *list) {
     static uint8_t table[8192];
@@ -272,6 +290,7 @@ int main(void) {
     test_semantics();
     test_matches();
     test_validate_alone();
+    test_tie_past_dead_last();
     test_battles();
     if (failures > 0) {
         printf("%d failure(s)\n", failures);

@@ -26,7 +26,7 @@ WARRIORS = $(wildcard warriors/*.red)
 LDFLAGS ?=
 PREFIX ?= /usr/local
 
-.PHONY: all test fuzz fmt fmt-check tidy check qa install clean
+.PHONY: all test fuzz fmt fmt-check tidy check qa install dist clean
 
 all: bin/corewar corewar.fbb
 
@@ -104,5 +104,11 @@ install: bin/corewar
 	mkdir -p $(PREFIX)/bin
 	cp bin/corewar $(PREFIX)/bin/corewar
 
+# What release.sh publishes (VERSION is its tag): corewar for macOS and Linux.
+DIST_DIR ?= dist
+dist: $(CORE) build/corewar_fbb.c
+	sh $(FILO_TERM)/tools/dist.sh $(DIST_DIR) corewar -O2 $(FLAGS) \
+		$(CORE) build/corewar_fbb.c src/main.c
+
 clean:
-	rm -rf build bin corewar.fbb
+	rm -rf build bin dist corewar.fbb
