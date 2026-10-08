@@ -244,9 +244,13 @@ static int b_cw_edit(filo_ctx *ctx, const filo_value *a, uint32_t n, filo_value 
     path[a[0].u.str.len] = '\0';
     struct stat st;
     const cw_file *c = carried(path);
-    if (stat(path, &st) != 0 && c != NULL && !write_out(c)) {
-        *out = filo_cstring(strerror(errno));
-        return FILO_OK;
+    bool copied = false;
+    if (c != NULL && stat(path, &st) != 0) {
+        if (!write_out(c)) {
+            *out = filo_cstring(strerror(errno));
+            return FILO_OK;
+        }
+        copied = true;
     }
     const char *editor = getenv("VISUAL");
     if (editor == NULL || editor[0] == '\0') {
@@ -270,6 +274,15 @@ static int b_cw_edit(filo_ctx *ctx, const filo_value *a, uint32_t n, filo_value 
     tty_resume(&D.a);
     if (pid < 0 || !WIFEXITED(status) || WEXITSTATUS(status) == 127) {
         *out = filo_cstring("the editor did not run");
+        return FILO_OK;
+    }
+    /* a classic is edited as a file of its own, here: whoever ran this in
+       some other directory learns where it went */
+    char dir[CW_PATH_MAX];
+    if (copied && getcwd(dir, sizeof(dir)) != NULL) {
+        static char note[CW_PATH_MAX + 32];
+        (void)snprintf(note, sizeof(note), "%s copied to %s", path, dir);
+        *out = filo_cstring(note);
         return FILO_OK;
     }
     *out = filo_cstring("");
