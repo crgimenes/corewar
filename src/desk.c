@@ -104,6 +104,7 @@ static const term_app pager_app = {
     .on_key = pager_on_key,
     .on_resize = pager_on_resize,
     .on_tick = pager_on_tick,
+    .selects = true,
 };
 
 static void to_pager(void *user, const uint8_t *data, size_t n) {
