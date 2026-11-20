@@ -13,12 +13,12 @@ CLI_DEP = $(filter $(FILO)/build/filo,$(FILO_CLI))
 
 WARN = -Wall -Wextra -Werror -Wshadow -Wconversion -Wdouble-promotion -Wundef
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
-INC = -Isrc -Ibuild -I$(FILO_TERM)/src -I$(FILO)
+INC = -Isrc -Ibuild -I$(FILO_TERM)/src -I$(FILO)/src
 FLAGS = -std=c11 -D_DEFAULT_SOURCE $(WARN) $(INC) -DCOREWAR_VERSION='"$(VERSION)"' -DFILO_VM_ONLY
 TERMSRC = $(addprefix $(FILO_TERM)/src/,term.c canvas.c utf8.c keyin.c paint.c field.c app.c pager.c md.c hl.c tty.c)
-FILOSRC = $(addprefix $(FILO)/,filo.c filo_math.c filo_strings.c filo_nolibc.c)
+FILOSRC = $(addprefix $(FILO)/src/,filo.c filo_math.c filo_strings.c filo_nolibc.c)
 CORE = src/mars.c src/arena.c src/desk.c build/library.c $(TERMSRC) $(FILOSRC)
-HDRS = $(wildcard src/*.h) $(wildcard $(FILO_TERM)/src/*.h) $(FILO)/filo.h
+HDRS = $(wildcard src/*.h) $(wildcard $(FILO_TERM)/src/*.h) $(FILO)/src/filo.h
 PROG = $(wildcard prog/*.filo)
 WARRIORS = $(wildcard warriors/*.red)
 # A release links everything it can: LDFLAGS=-static on Linux (musl); macOS
